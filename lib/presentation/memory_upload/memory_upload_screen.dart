@@ -117,8 +117,9 @@ class _MemoryUploadScreenState extends State<MemoryUploadScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
+    return Scaffold(backgroundColor: Color(0xFFE6E6FA), // Light purple background
+
+        appBar: AppBar(
         title: Text('Upload Memory', style: TextStyle(color: Colors.deepPurple, fontWeight: FontWeight.bold)),
         backgroundColor: Colors.white,
         elevation: 5,
@@ -177,7 +178,7 @@ class _MemoryUploadScreenState extends State<MemoryUploadScreen> {
                 label: Text('Save Memory', style: TextStyle(color: Colors.white)),
                 style: ElevatedButton.styleFrom(
                   padding: EdgeInsets.symmetric(horizontal: 24, vertical: 14),
-                  backgroundColor: Colors.grey[850],
+                  backgroundColor:Color(0xFF0D47A1) ,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                   textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
@@ -233,7 +234,7 @@ class _MemoryUploadScreenState extends State<MemoryUploadScreen> {
   }
 
   Future<void> _pickAudio() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.audio);
+    FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.audio,);
     setState(() {
       if (result != null) {
         _mediaFile = File(result.files.single.path!);

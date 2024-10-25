@@ -71,7 +71,6 @@ class _MemoryListScreenState extends State<MemoryListScreen> {
     _loadMemories();
   }
 
-  @override
   Widget _buildMemoryItem(Map<String, String> memory, int index) {
     return GestureDetector(
       onTap: () {
@@ -105,49 +104,81 @@ class _MemoryListScreenState extends State<MemoryListScreen> {
           }
         }
       },
-      child: Card(
-        color: Colors.white,
-        elevation: 10,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        child: Column(
-          children: [
-            Expanded(
-              child: (memory['type'] == 'image')
-                  ? ClipRRect(
-                borderRadius: BorderRadius.circular(10.0),
-                child: Image.file(
-                  File(memory['path']!),
-                  fit: BoxFit.cover,
-                  width: double.infinity,
-                ),
-              )
-                  : (memory['type'] == 'video')
-                  ? ClipRRect(
-                borderRadius: BorderRadius.circular(5.0),
-                child: VideoPlayerWidget(videoFile: File(memory['path']!)),
-              )
-                  : Icon(Icons.audiotrack, size: 80, color: Colors.grey),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                memory['title']!,
-                style: TextStyle(
-                  fontFamily: 'Merriweather',
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-                textAlign: TextAlign.center,
+      child: SizedBox(height: 20,
+        child: Card(
+          color: Colors.white,
+          elevation: 10,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+          child: Column(
+            children: [
+              Expanded(
+                child: (memory['type'] == 'image')
+                    ? ClipRRect(
+                  borderRadius: BorderRadius.circular(10.0),
+                  child: Image.file(
+                    File(memory['path']!),
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                  ),
+                )
+                    : (memory['type'] == 'video')
+                    ? ClipRRect(
+                  borderRadius: BorderRadius.circular(5.0),
+                  child: VideoPlayerWidget(videoFile: File(memory['path']!)),
+                )
+                    : Icon(Icons.audiotrack_outlined, size: 80, color: Colors.grey),
               ),
-            ),
-            if (memory['type'] == 'audio' && _playingAudioPath == memory['path'])
-              IconButton(
-                icon: Icon(Icons.stop, color: Colors.red),
-                onPressed: _stopAudio,
+              Padding(
+                padding: const EdgeInsets.only(top: 12),
+                child: SizedBox(
+                  child: Text(
+                    memory['title']!,
+                    style: TextStyle(
+                      fontFamily: 'Merriweather',
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
               ),
-          ],
+              if (memory['type'] == 'audio' && _playingAudioPath == memory['path'])
+                IconButton(
+                  icon: Icon(Icons.stop, color: Colors.red),
+                  onPressed: _stopAudio,
+                ),
+              if (memory['type'] == 'audio')
+                SizedBox(height: 39,
+                  child: IconButton(
+                    icon: Icon(Icons.delete, color: Colors.red,size: 20,),
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: Text('Delete Memory'),
+                          content: Text('Are you sure you want to delete this memory?'),
+                          actions: [
+                            TextButton(
+                              child: Text('Cancel'),
+                              onPressed: () => Navigator.of(context).pop(),
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.delete, color: Colors.red,),
+                              onPressed: () {
+                                _deleteMemory(index); // Call delete function
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                ),
+            ],
+          ),
         ),
       ),
     );
@@ -170,7 +201,8 @@ class _MemoryListScreenState extends State<MemoryListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold(backgroundColor: Color(0xFFE6E6FA) , // Light purple background
+
       appBar: AppBar(
         title: Center(
           child: Text(
@@ -183,7 +215,7 @@ class _MemoryListScreenState extends State<MemoryListScreen> {
           ),
         ),
         backgroundColor: Colors.white,
-        elevation: 6,
+        elevation: 5,
       ),
       body: Column(
         children: [
@@ -203,10 +235,11 @@ class _MemoryListScreenState extends State<MemoryListScreen> {
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.deepPurple),
                   borderRadius: BorderRadius.circular(12),
-                ), prefixIcon: Icon(
-                Icons.search,
-                color: Colors.deepPurple, // Search icon color
-              ),
+                ),
+                prefixIcon: Icon(
+                  Icons.search,
+                  color: Colors.deepPurple,
+                ),
               ),
             ),
           ),
@@ -276,7 +309,6 @@ class _MemoryListScreenState extends State<MemoryListScreen> {
   }
 }
 
-
 class FullScreenImageViewer extends StatelessWidget {
   final File imageFile;
   final int index;
@@ -292,38 +324,31 @@ class FullScreenImageViewer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Image'),
+        title: Center(
+          child: Text(
+            'Image',
+            style: TextStyle(
+              fontFamily: 'Oswald',
+              color: Colors.deepPurple,
+            ),
+          ),
+        ),
+        backgroundColor: Colors.white,
         actions: [
           IconButton(
             icon: Icon(Icons.delete, color: Colors.red),
             onPressed: () {
-              showDialog(
-                context: context,
-                builder: (context) => AlertDialog(
-                  title: Text('Delete Memory'),
-                  content: Text('Are you sure you want to delete this memory?'),
-                  actions: [
-                    TextButton(
-                      child: Text('Cancel'),
-                      onPressed: () => Navigator.of(context).pop(),
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.delete, color: Colors.red),
-                      onPressed: () {
-                        onDelete(index);
-                        Navigator.of(context).pop();
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                  ],
-                ),
-              );
+              onDelete(index);
+              Navigator.pop(context);
             },
           ),
         ],
       ),
       body: Center(
-        child: Image.file(imageFile),
+        child: Image.file(
+          imageFile,
+          fit: BoxFit.contain,
+        ),
       ),
     );
   }
@@ -391,7 +416,14 @@ class _FullScreenVideoPlayerState extends State<FullScreenVideoPlayer> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Video'),
+        title: Center(
+          child: Text('Video',style: TextStyle(
+            color: Colors.deepPurple,
+            fontFamily: 'Oswald',
+            fontWeight: FontWeight.bold,
+          ),),
+        ),backgroundColor: Colors.white,
+        elevation: 6,
         actions: [
           IconButton(
             icon: Icon(Icons.delete, color: Colors.red),
@@ -442,8 +474,6 @@ class _FullScreenVideoPlayerState extends State<FullScreenVideoPlayer> {
     );
   }
 }
-
-
 class VideoPlayerWidget extends StatefulWidget {
   final File videoFile;
 
@@ -511,3 +541,4 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
     );
   }
 }
+
