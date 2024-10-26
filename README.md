@@ -18,7 +18,8 @@ This project emphasizes clean code, adherence to best practices, and a minimalis
 - **Responsive Design**: Adapts to different screen sizes and orientations, ensuring a great experience on both mobile and tablet devices.
 ![image alt](https://github.com/vishn-Mk/memorysharingapp/blob/main/upload_memoery.jpg?raw=true)
 ![image alt](https://github.com/vishn-Mk/memorysharingapp/blob/main/memory_list.jpg?raw=true)
-## Getting Started
+## Getting Started 
+upload product video for showing example of app
 
 This project is a starting point for a Flutter application. If you're new to Flutter, here are a few resources to help you get started:
 
