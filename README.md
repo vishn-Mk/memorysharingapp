@@ -16,7 +16,7 @@ This project emphasizes clean code, adherence to best practices, and a minimalis
 - **Playback and Viewing**: Watch videos and listen to audio recordings directly within the app, with an enlarged view for photos.
 - **Smooth Animations**: Intuitive and smooth animations enhance the app's usability and give it a modern feel.
 - **Responsive Design**: Adapts to different screen sizes and orientations, ensuring a great experience on both mobile and tablet devices.
-
+![image alt](https://github.com/vishn-Mk/memorysharingapp/blob/main/upload_memoery.jpg?raw=true)
 ## Getting Started
 
 This project is a starting point for a Flutter application. If you're new to Flutter, here are a few resources to help you get started:
